@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Stack, useRouter } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { ClerkProvider } from "@clerk/clerk-expo";
 
 import * as SplashScreen from "expo-splash-screen";
 import {
@@ -18,6 +19,8 @@ export const unstable_settings = {
 };
 
 SplashScreen.preventAutoHideAsync();
+
+const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 export default function RootLayout() {
   const [montserratLoaded, montserratError] = useMontserrat({
@@ -40,7 +43,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <ClerkProvider publishableKey={clerkPublishableKey}>
+      <RootLayoutNav />
+    </ClerkProvider>
+  );
 }
 
 const RootLayoutNav = () => {
